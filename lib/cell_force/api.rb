@@ -60,6 +60,10 @@ module CellForce
         post("apiresponse/#{callback}", moflag: (mo ? 1 : 0), drflag: (dr ? 1 : 0), rsflag: (rs ? 1 : 0), mourl: mo || "", drurl: dr || "", rsurl: rs || "", code: args[:code], row_id: args[:id])
       end
 
+      def united_states_id
+        @united_states_id ||= post("member/getdata").data["countries"].find{ |country| "United States" == country["country"] }["id"]
+      end
+
       private
       def post_with_automatic_login(resource, body)
         body = body.merge(login_data) unless LOG_IN_RESOURCE == resource

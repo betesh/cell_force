@@ -10,6 +10,10 @@ module CellForce
       @phone, @short_code = phone, short_code
     end
 
+    def create!
+      post("member/create", member_info: { cellnumber: phone, country_id: Api.united_states_id, carrier: carrier_id })
+    end
+
     def send_mt(message)
       Api.post(Api::SEND_SMS_RESOURCE, sms_validation: SmsValidation::Sms.new(phone, message), shortcode_id: short_code_id).data["mt_id"]
     end
