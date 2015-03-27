@@ -6,7 +6,7 @@ module ConfigurationFromYaml
   extend RSpec::Core::SharedContext
   SECRETS = YAML::load(File.open('spec/secrets.yml'))
 
-  [:phone, :username, :password, :api_key].each do |key|
+  [:phone, :username, :password, :api_key, :api_response_url].each do |key|
     let(key) { SECRETS[key.to_s] }
   end
 

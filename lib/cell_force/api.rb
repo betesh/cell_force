@@ -54,6 +54,12 @@ module CellForce
         post("users/logout").tap { @login_data = nil }
       end
 
+      def set_api_response(args={})
+        callback = args.key?(:id) ? :update : :create
+        mo, dr, rs = args[:mo], args[:dr], args[:rs]
+        post("apiresponse/#{callback}", moflag: (mo ? 1 : 0), drflag: (dr ? 1 : 0), rsflag: (rs ? 1 : 0), mourl: mo || "", drurl: dr || "", rsurl: rs || "", code: args[:code], row_id: args[:id])
+      end
+
       private
       def post_with_automatic_login(resource, body)
         body = body.merge(login_data) unless LOG_IN_RESOURCE == resource
