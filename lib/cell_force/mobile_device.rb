@@ -1,4 +1,5 @@
 require "cell_force/default_short_code"
+require "cell_force/tcpa_opt_in_campaign"
 
 module CellForce
   class MobileDevice
@@ -13,7 +14,11 @@ module CellForce
       Api.post(Api::SEND_SMS_RESOURCE, sms_validation: SmsValidation::Sms.new(phone, message), shortcode_id: short_code_id)
     end
 
-    def simulate_mo(keyword)
+    def simulate_mo(keyword, campaign_options={})
+      tcpa_opt_in_campaign = TcpaOptInCampaign.new(keyword)
+      if tcpa_opt_in_campaign.campaign_ids.empty?
+        tcpa_opt_in_campaign.create_campaign(campaign_options)
+      end
       Api.post("sms/mo", cellnumber: phone, message: keyword, shortcode_id: short_code_id, carrier_id: carrier_id, trigger: "DOUBLEOPTIN")
     end
 

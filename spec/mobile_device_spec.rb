@@ -47,9 +47,30 @@ describe CellForce::MobileDevice do
       clean_up
     end
 
+    let(:campaign_options) {
+      {
+        name: "Opt in to Keyword CDF",
+        first_message: "Welcome to keyword CDF campaigns.  To join, reply Y",
+        second_message: "Thanks, you have joined keyword CDF campaigns",
+        error_message: "We could not understand your response.  Please reply Y to join"
+      }
+    }
+
     after(:each) do
-      api.post("campaign/delete", row_id: campaign_id)
-      api.post("keyword/delete", row_id: keyword_id)
+      tcpa_opt_in = CellForce::TcpaOptInCampaign.new(keyword)
+      tcpa_opt_in.campaign_ids.each do |id|
+        api.post("campaign/delete", row_id: id)
+      end
+      api.post("keyword/delete", row_id: tcpa_opt_in.keyword_id)
+    end
+
+    it "should simulate an MO when the keyword does not already exist" do
+      subject.simulate_mo(keyword, campaign_options)
+    end
+
+    it "should simulate an MO when the keyword exists but the campaign does not" do
+      keyword_id
+      subject.simulate_mo(keyword, campaign_options)
     end
 
     it "should simulate an MO when the keyword and campaign already exist" do
