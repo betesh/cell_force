@@ -36,9 +36,9 @@ describe CellForce::MobileDevice do
         keyword_id: keyword_id,
         shortcode_id: subject.send(:short_code_id),
         optinkeyword: "Y",
-        name: "Opt in to Keyword CDF",
-        message: "Welcome to keyword CDF campaigns.  To join, reply Y",
-        doubleoptinmessage: "Thanks, you have joined keyword CDF campaigns",
+        name: "Opt in to Keyword #{keyword}",
+        message: "Welcome to keyword #{keyword} campaigns.  To join, reply Y",
+        doubleoptinmessage: "Thanks, you have joined keyword #{keyword} campaigns",
         errormessage: "We could not understand your response.  Please reply Y to join"
       ).data["campaign_id"]
     end
@@ -49,9 +49,9 @@ describe CellForce::MobileDevice do
 
     let(:campaign_options) {
       {
-        name: "Opt in to Keyword CDF",
-        first_message: "Welcome to keyword CDF campaigns.  To join, reply Y",
-        second_message: "Thanks, you have joined keyword CDF campaigns",
+        name: "Opt in to Keyword #{keyword}",
+        first_message: "Welcome to keyword #{keyword} campaigns.  To join, reply Y",
+        second_message: "Thanks, you have joined keyword #{keyword} campaigns",
         error_message: "We could not understand your response.  Please reply Y to join"
       }
     }
