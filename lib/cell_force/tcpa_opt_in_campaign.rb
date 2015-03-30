@@ -18,7 +18,11 @@ module CellForce
           Api.post("keyword/create", keyword: keyword, shortcodes: short_code_id).data["row_id"]
         rescue CellForce::Api::Failure => e
           raise e unless e.to_s == "Keyword is already Exist"
-          Api.post("keyword/list").data.find{ |r| keyword == r["keyword"] }["id"]
+          if (keyword_record = Api.post("keyword/list").data.find{ |r| keyword == r["keyword"] }) #Intentional assignment operator
+            keyword_record["id"]
+          else
+            raise StandardError, "This keyword is already in use by another consumer of the short_code #{short_code}"
+          end
         end
       end
     end
