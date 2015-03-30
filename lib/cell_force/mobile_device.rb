@@ -12,5 +12,14 @@ module CellForce
     def send_mt(message)
       Api.post(Api::SEND_SMS_RESOURCE, sms_validation: SmsValidation::Sms.new(phone, message), shortcode_id: short_code_id)
     end
+
+    def simulate_mo(keyword)
+      Api.post("sms/mo", cellnumber: phone, message: keyword, shortcode_id: short_code_id, carrier_id: carrier_id, trigger: "DOUBLEOPTIN")
+    end
+
+    private
+    def carrier_id
+      @carrier_id ||= Api.post("member/networklookup", cellphone: phone).data["id"]
+    end
   end
 end
