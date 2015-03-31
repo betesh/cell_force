@@ -8,6 +8,8 @@ namespace :cell_force do
     SmsValidation.configure do |config|
       require "logger"
       config.logger = ::Logger.new(STDOUT)
+      config.logger.level = Logger::INFO
+      config.log_at :info
     end
 
     require "yaml"

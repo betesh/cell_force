@@ -21,7 +21,9 @@ module CellForce
 
         def parse_response(response)
           body = JSON.parse(response.body)
-          SmsValidation.log { "CellForce API: #{response.code}:#{response.message}\n\t\tHeaders:\n#{hash_to_log(response.headers)}\n\t\tBody:\n#{hash_to_log(body.inject({}) { |hash, (k,v)| hash[k] = filtered(v); hash })}" }
+          SmsValidation.log { "CellForce API: #{response.code}:#{response.message}" }
+          SmsValidation.configuration.logger.debug { "\n\t\tHeaders:\n#{hash_to_log(response.headers)}" }
+          SmsValidation.log { "\n\t\tBody:\n#{hash_to_log(body.inject({}) { |hash, (k,v)| hash[k] = filtered(v); hash })}" }
           raise Failure, body["error"] if "failure" == body["status"]
           Struct.new(*body.keys.collect(&:to_sym)).new(*body.values)
         end
