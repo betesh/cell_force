@@ -29,6 +29,11 @@ namespace :cell_force do
     CellForce::Api.post("keyword/enable", row_id: CellForce::TcpaOptInCampaign.new(ENV['KEYWORD']).keyword_id)
   end
 
+  desc "List all keywords associated with the account"
+  task list_keywords: :configure do
+    puts CellForce::Api.post("keyword/list").data.collect { |k| "#{k["keyword"]}#{" (campaign: '#{k["campaign"]}')" unless "N/A" == k["campaign"] }" }.join(", ")
+  end
+
   desc "Send an MT (PHONE=NNNNNNNNNN rake cell_force:send_mt)"
   task send_mt: :configure do
     CellForce::MobileDevice.new(ENV['PHONE']).send_mt("Test message via CellForce. Sent at #{Time.now}")
