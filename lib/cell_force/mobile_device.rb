@@ -11,7 +11,7 @@ module CellForce
     end
 
     def send_mt(message)
-      Api.post(Api::SEND_SMS_RESOURCE, sms_validation: SmsValidation::Sms.new(phone, message), shortcode_id: short_code_id)
+      Api.post(Api::SEND_SMS_RESOURCE, sms_validation: SmsValidation::Sms.new(phone, message), shortcode_id: short_code_id).data["mt_id"]
     end
 
     def simulate_mo(keyword, campaign_options={})
