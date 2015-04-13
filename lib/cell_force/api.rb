@@ -23,7 +23,7 @@ module CellForce
           body = JSON.parse(response.body)
           SmsValidation.log { "CellForce API: #{response.code}:#{response.message}" }
           SmsValidation.configuration.logger.debug { "\n\t\tHeaders:\n#{hash_to_log(response.headers)}" }
-          SmsValidation.log { "\n\t\tBody:\n#{hash_to_log(body.inject({}) { |hash, (k,v)| hash[k] = filtered(v); hash })}" }
+          SmsValidation.log { "\n\t\tBody:\n#{hash_to_log(body.inject({}) { |hash, (k,v)| filtered_v = filtered(v); hash[k] = filtered_v unless {} == filtered_v; hash })}" }
           raise Failure, body["error"] if "failure" == body["status"]
           Struct.new(*body.keys.collect(&:to_sym)).new(*body.values)
         end
@@ -42,7 +42,7 @@ module CellForce
 
     LOG_IN_RESOURCE = "users/login"
     SEND_SMS_RESOURCE = "member/sendsms"
-    PARAMETER_FILTER = [:password, :user_key]
+    PARAMETER_FILTER = [:password, :user_key, :client_id]
 
     class << self
       def post(resource, body={})
