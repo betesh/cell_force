@@ -1,3 +1,5 @@
+require "bundler/gem_tasks"
+
 $LOAD_PATH << File.expand_path("#{File.dirname(__FILE__)}/lib") << File.expand_path(File.dirname(__FILE__))
 require "cell_force"
 
