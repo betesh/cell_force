@@ -36,8 +36,8 @@ namespace :cell_force do
     puts CellForce::Api.post("keyword/list").data.collect { |k| "#{k["keyword"]}#{" (campaign: '#{k["campaign"]}')" unless "N/A" == k["campaign"] }" }.join(", ")
   end
 
-  desc "Send an MT (PHONE=NNNNNNNNNN rake cell_force:send_mt)"
+  desc "Send an MT (PHONE=NNNNNNNNNN [ SHORT_CODE_ID=YY ] rake cell_force:send_mt)"
   task send_mt: :configure do
-    CellForce::MobileDevice.new(ENV['PHONE']).send_mt("Test message via CellForce. Sent at #{Time.now}")
+    CellForce::MobileDevice.new(ENV['PHONE']).tap{|mt| mt.short_code_id = ENV['SHORT_CODE_ID'] }.send_mt("Test message via CellForce. Sent at #{Time.now}")
   end
 end

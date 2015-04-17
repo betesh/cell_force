@@ -2,6 +2,10 @@ require "cell_force/api"
 
 module CellForce
   module DefaultShortCode
+    def short_code_id=(_)
+      @short_code_id = _
+    end
+
     def short_code_id
       @short_code_id ||= begin
         data = Api.post("shortcode/getusershortcodes").data
