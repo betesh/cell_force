@@ -16,7 +16,7 @@ module CellForce
         end
 
         def hash_to_log(hash)
-          hash.sort_by{ |k,v| k }.collect{|k,v| "\t\t\t#{k}:#{" " * (15 - k.length)}\t#{v}" }.join("\n")
+          hash.sort_by{ |k,v| k }.collect{|k,v| "\t\t\t#{k}:#{" " * [(15 - k.length),0].max}\t#{v}" }.join("\n")
         end
 
         def parse_response(response)
