@@ -31,6 +31,24 @@ namespace :cell_force do
     CellForce::Api.post("keyword/enable", row_id: CellForce::TcpaOptInCampaign.new(ENV['KEYWORD']).keyword_id)
   end
 
+  desc "Delete a keyword (KEYWORD=XXX rake cell_force:delete_keyword)"
+  task delete_keyword: :configure do
+    CellForce::Api.post("keyword/delete", row_id: CellForce::TcpaOptInCampaign.new(ENV['KEYWORD']).keyword_id)
+  end
+
+  desc "Delete all keywords"
+  task delete_all_keywords: :configure do
+    CellForce::Api.post("keyword/list").data.collect{ |k| k["id"]}.each do |k|
+        CellForce::Api.post("campaign/list").data.each do |campaign|
+        if k == CellForce::Api.post("campaign/detail", row_id: campaign["campaign_id"]).data["keyword_id"]
+          CellForce::Api.post("campaign/delete", row_id: campaign["campaign_id"])
+        end
+      end
+
+      CellForce::Api.post("keyword/delete", row_id: k)
+    end
+  end
+
   desc "List all keywords associated with the account"
   task list_keywords: :configure do
     puts CellForce::Api.post("keyword/list").data.collect { |k| "#{k["keyword"]}#{" (campaign: '#{k["campaign"]}')" unless "N/A" == k["campaign"] }" }.join(", ")
